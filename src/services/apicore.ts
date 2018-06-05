@@ -1,16 +1,23 @@
 import { Injectable } from "@angular/core";
-import { Http, RequestOptionsArgs } from '@angular/http';
+import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http';
 
 @Injectable()
 export class ApiCore {
-    url: string = 'localhost:3000/';
-    // url: string = 'http://localhost:8100/api/';
+    // url: string = 'localhost:3000/';
+    url: string = 'http://localhost:8100/api/';
 
     constructor(private http: Http) {}
 
     get(endpoint: string, reqOpts?: any) {
-        console.log('[GET]', this.url + endpoint);
-        return this.http.get(this.url + endpoint, reqOpts);
+        let headers = new Headers();
+        // headers.append('Allow-Control-Allow-Origin', '*');
+        // headers.append('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT');
+        // headers.append('Accept','application/json');
+        // headers.append('content-type','application/json');
+        
+        let options = new RequestOptions({ headers: headers });
+        console.log('[GET]', this.url + endpoint, options);
+        return this.http.get(this.url + endpoint, options);
     }
 
     // downloadFile(endpoint){

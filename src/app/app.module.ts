@@ -10,6 +10,7 @@ import { MusicService } from '../services/music.service';
 import { ApiCore } from '../services/apicore';
 import { Http, ConnectionBackend, HttpModule } from '@angular/http';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { MusicPlayer } from '../services/musicPlayer.service';
 
 @NgModule({
     declarations: [
@@ -32,6 +33,7 @@ import { NativeAudio } from '@ionic-native/native-audio';
         ApiCore,
         MusicService,
         NativeAudio,
+        MusicPlayer,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })

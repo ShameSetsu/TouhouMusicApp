@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 import { MusicService } from '../../services/music.service';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { MusicPlayer } from '../../services/musicPlayer.service';
 
 @Component({
     selector: 'page-home',
@@ -11,23 +12,29 @@ export class HomePage {
 
     music;
 
-    constructor(private navCtrl: NavController, private musicService: MusicService, private nativeAudio: NativeAudio, private platform: Platform) {
+    constructor(private navCtrl: NavController, private musicService: MusicService, private musicPlayer: MusicPlayer, private platform: Platform) {
 
     }
 
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             console.log('ready');
-            this.musicService.getTestMusic('001.mp3').subscribe(res => {
-                console.log('res', res);
-                this.nativeAudio.preloadSimple('uniqueKey1', <any>res).then(() => {
-                    //this.nativeAudio.play('uniqueKey1');
-                });
+            this.musicService.getTestMusic('001.mp3').subscribe((res: any) => {
+                this.musicPlayer.setTracks(res.files);
             });
         });
     }
 
     playMusic() {
-        this.nativeAudio.play('uniqueKey1').then(res => console.log('play', res), err => console.error('play', err));
+        this.musicPlayer
+            .play('001')
+            .then(res => console.log('play', res))
+            .catch(err => console.error('play', err));
+    }
+
+    pauseMusic() {
+        this.musicPlayer.pause()
+        .then(res => console.log('stop', res))
+        .catch(err => console.error('stop', err));
     }
 }
