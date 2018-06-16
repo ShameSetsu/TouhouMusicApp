@@ -7,12 +7,11 @@ export class MusicService {
 
     constructor(public api: ApiCore){}
 
-    getTestMusic(fileName: String) {
-        const endpoint = 'test/music';
-        return this.api.get(endpoint).do(res=>{
+    getAlbumTest(){
+        return this.api.get('album/test').do(res=>{
             console.log('getTestMusic', res);
         }, err=>{
             console.error('getTestMusic', err);
-        }).map((res: any)=>JSON.parse(res._body))
+        }).map((res: any)=>JSON.parse(res._body));
     }
 }

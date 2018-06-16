@@ -19,8 +19,9 @@ export class HomePage {
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             console.log('ready');
-            this.musicService.getTestMusic('001.mp3').subscribe((res: any) => {
-                this.musicPlayer.setTracks(res.files);
+            this.musicService.getAlbumTest().subscribe((res: any) => {
+                console.log('testAlbum', res)
+                this.musicPlayer.setTracks(res.tracks[0]);
             });
         });
     }

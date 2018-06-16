@@ -4,7 +4,7 @@ import { Http, RequestOptionsArgs, RequestOptions, Headers } from '@angular/http
 @Injectable()
 export class ApiCore {
     // url: string = 'localhost:3000/';
-    url: string = 'http://localhost:8100/api/';
+    url: string = 'http://192.168.1.24:3000/api/';
 
     constructor(private http: Http) {}
 

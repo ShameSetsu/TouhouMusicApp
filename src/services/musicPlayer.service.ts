@@ -7,14 +7,16 @@ export class MusicPlayer {
     currentPlaylist: Array<any>;
 
     //POC VAR
-    track = 'http://localhost:3000/files/music/001.mp3';
     currentTrackId: string;
+    track;
 
     constructor(private nativeAudio: NativeAudio) { }
 
     play(trackId: string): Promise<any> {
-        this.currentTrackId = trackId;
-        return this.nativeAudio.preloadSimple(this.currentTrackId, this.track).then(() => {
+        this.currentTrackId = this.track.file;
+        console.log("play", this.track);
+        console.log('trackUrl', 'http://192.168.1.24:3000/files/music/' + this.track.file + '.' + this.track.format);
+        return this.nativeAudio.preloadComplex(this.currentTrackId, 'http://192.168.1.24:3000/files/music/' + this.track.file + '.' + this.track.format, 1,1,0).then(() => {
             return this.nativeAudio.play(this.currentTrackId)
         });
     }
@@ -23,7 +25,7 @@ export class MusicPlayer {
         return this.nativeAudio.stop(this.currentTrackId);
     }
 
-    setTracks(tarcks: any) {
-        return null;
+    setTracks(track: any) {
+        this.track = track;
     }
 }
