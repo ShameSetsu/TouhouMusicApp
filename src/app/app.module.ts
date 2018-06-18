@@ -1,21 +1,25 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { Media } from '@ionic-native/media';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
-import { MyApp } from './app.component';
+import { AlbumCard } from '../components/album-card/album-card';
 import { HomePage } from '../pages/home/home';
-import { MusicService } from '../services/music.service';
 import { ApiCore } from '../services/apicore';
-import { Http, ConnectionBackend, HttpModule } from '@angular/http';
-import { NativeAudio } from '@ionic-native/native-audio';
+import { MusicService } from '../services/music.service';
 import { MusicPlayer } from '../services/musicPlayer.service';
+import { MyApp } from './app.component';
+import { TrackCard } from '../components/track-card/track-card';
 
 @NgModule({
     declarations: [
         MyApp,
-        HomePage
+        HomePage,
+        AlbumCard,
+        TrackCard
     ],
     imports: [
         BrowserModule,
@@ -32,7 +36,7 @@ import { MusicPlayer } from '../services/musicPlayer.service';
         SplashScreen,
         ApiCore,
         MusicService,
-        NativeAudio,
+        Media,
         MusicPlayer,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]

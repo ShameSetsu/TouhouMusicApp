@@ -1,0 +1,30 @@
+<ion-card>
+    <ion-card-content>
+        <div class="thumbnail">
+            <img [src]="sanitize(track.albumThumbnail)">
+        </div>
+        <div class="info">
+            <div class="info-wrapper">
+                <p>{{ track.title }}</p>
+            </div>
+            <div class="info-wrapper">
+                <p>{{ track.artist.name }}</p>
+            </div>
+            <div class="info-wrapper">
+                <p>{{ track.originalTitle.name }}</p>
+            </div>
+            <div class="info-wrapper">
+                <p *ngFor="let genre of track.genre">{{ genre.name }}</p>
+            </div>
+        </div>
+    </ion-card-content>
+    <ion-card-content class="card-media">
+        <div class="media">
+            <button class="button-wrapper" (click)="toogleTrack()">
+                <ion-icon *ngIf="!playing" name="play"></ion-icon>
+                <ion-icon *ngIf="playing" name="pause"></ion-icon>
+            </button>
+        </div>
+    </ion-card-content>
+
+</ion-card>

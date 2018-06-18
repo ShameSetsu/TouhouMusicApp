@@ -1,31 +1,26 @@
-import { Injectable } from "@angular/core";
-import { NativeAudio } from "@ionic-native/native-audio";
+import { Injectable, EventEmitter } from '@angular/core';
+import { Media, MediaObject } from '@ionic-native/media';
+
+import { AlbumTrackOutDto } from '../models/trackOutDto';
 
 @Injectable()
 export class MusicPlayer {
+    playlist: Array<AlbumTrackOutDto>;
+    currentTrack: AlbumTrackOutDto;
+    playingTrack: MediaObject;
+    public trackPlaying: EventEmitter<string> = new EventEmitter<string>();
 
-    currentPlaylist: Array<any>;
+    constructor(private media: Media) { }
 
-    //POC VAR
-    currentTrackId: string;
-    track;
-
-    constructor(private nativeAudio: NativeAudio) { }
-
-    play(trackId: string): Promise<any> {
-        this.currentTrackId = this.track.file;
-        console.log("play", this.track);
-        console.log('trackUrl', 'http://192.168.1.24:3000/files/music/' + this.track.file + '.' + this.track.format);
-        return this.nativeAudio.preloadComplex(this.currentTrackId, 'http://192.168.1.24:3000/files/music/' + this.track.file + '.' + this.track.format, 1,1,0).then(() => {
-            return this.nativeAudio.play(this.currentTrackId)
-        });
+    play(track: AlbumTrackOutDto) {
+        if(this.playingTrack) this.playingTrack.stop();
+        this.playingTrack = this.media.create('http://192.168.1.24:3000/files/music/' + track.file + '.' + track.format);
+        this.playingTrack.play();
+        this.trackPlaying.emit(track._id);
     }
 
-    pause(): Promise<any> {
-        return this.nativeAudio.stop(this.currentTrackId);
-    }
-
-    setTracks(track: any) {
-        this.track = track;
+    pause() {
+        this.playingTrack.pause();
+        this.trackPlaying.emit(null);
     }
 }

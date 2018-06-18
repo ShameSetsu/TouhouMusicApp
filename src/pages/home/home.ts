@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
+
+import { AlbumOutDto } from '../../models/albumOutDto';
+import { AlbumTrackOutDto } from '../../models/trackOutDto';
 import { MusicService } from '../../services/music.service';
-import { NativeAudio } from '@ionic-native/native-audio';
 import { MusicPlayer } from '../../services/musicPlayer.service';
 
 @Component({
@@ -11,31 +13,29 @@ import { MusicPlayer } from '../../services/musicPlayer.service';
 export class HomePage {
 
     music;
+    albums: Array<AlbumOutDto>;
+    tracks: Array<AlbumTrackOutDto>;
 
-    constructor(private navCtrl: NavController, private musicService: MusicService, private musicPlayer: MusicPlayer, private platform: Platform) {
+    constructor(private musicService: MusicService, private musicPlayer: MusicPlayer, private platform: Platform) {
 
+    }
+
+    playMedia(track: AlbumTrackOutDto){
+        console.log('playTrack', track);
+        this.musicPlayer.play(track);
     }
 
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             console.log('ready');
-            this.musicService.getAlbumTest().subscribe((res: any) => {
-                console.log('testAlbum', res)
-                this.musicPlayer.setTracks(res.tracks[0]);
+            this.musicService.getAllTracks().subscribe((res: any) => {
+                this.tracks = res;
+                console.log('this.tracks', this.tracks);
             });
         });
     }
 
-    playMusic() {
-        this.musicPlayer
-            .play('001')
-            .then(res => console.log('play', res))
-            .catch(err => console.error('play', err));
-    }
-
-    pauseMusic() {
-        this.musicPlayer.pause()
-        .then(res => console.log('stop', res))
-        .catch(err => console.error('stop', err));
+    pauseMedia() {
+        this.musicPlayer.pause();
     }
 }
