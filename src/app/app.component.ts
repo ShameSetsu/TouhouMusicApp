@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 })
 export class MyApp {
     rootPage: any = HomePage;
+    trackFooterOpen: boolean = false;
 
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
         platform.ready().then(() => {
@@ -18,5 +19,10 @@ export class MyApp {
             statusBar.styleDefault();
             splashScreen.hide();
         });
+    }
+
+    openTrackFooter(value: boolean){
+        console.log('openTrackFooter', value);
+        this.trackFooterOpen = value;
     }
 }

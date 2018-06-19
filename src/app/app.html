@@ -1,2 +1,2 @@
-<ion-nav [root]="rootPage"></ion-nav>
-<current-track-footer></current-track-footer>
+<ion-nav [root]="rootPage" [ngClass]="{'current-track-footer': trackFooterOpen}"></ion-nav>
+<current-track-footer (open)="openTrackFooter($event)"></current-track-footer>

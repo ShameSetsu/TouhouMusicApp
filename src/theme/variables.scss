@@ -87,6 +87,8 @@ $colors: (
 @import "roboto";
 @import "noto-sans";
 
+// VARIABLES
+$TRACK_FOOTER_HEIGHT: 80px;
 
 // REMOVE SCROLLBAR
 ::-webkit-scrollbar,
@@ -116,7 +118,19 @@ ion-app.md ion-content.content .scroll-content {
     padding: 0;
 }
 
-button.button-wrapper{
+button.button-wrapper {
     border: 0;
     background-color: unset;
+}
+ion-nav.current-track-footer {
+    ion-content.content-md {
+        height: calc(100vh - 80px);
+    }
+}
+
+p {
+    text-overflow: ellipsis !important;
+    word-wrap: normal !important;
+    overflow: hidden !important;
+    white-space: nowrap;
 }

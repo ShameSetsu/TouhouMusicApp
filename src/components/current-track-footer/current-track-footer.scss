@@ -1,21 +1,53 @@
 current-track-footer {
     ion-footer.hidden {
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+    ion-toolbar.footer-md,
+    div.toolbar-content-md,
+    ion-card.card-md,
+    ion-card-content.card-conent-md {
+        height: 100%;
     }
     ion-footer {
-        ion-card-content{
+        height: $TRACK_FOOTER_HEIGHT;
+        transition: visibility 0s, opacity 0.3s linear;
+        ion-card.card-md{
+            margin: 0;
+            width: 100%;
+        }
+        ion-card-content.card-content-md {
             display: flex;
+            padding: 0;
+            div.thumbnail-wrapper{
+                margin: 2px 10px 2px 2px;
+                height: 68px;
+                min-width: 68px;
+                width: 68px;
+                img{
+                    height: 100%;
+                    width: auto;
+                    box-shadow: 0 0 3px rgba(#000, 0.3);
+                }
+            }
             div.track-info-wrapper{
-                flex: 5 0 0;
+                width: calc(100% - 190px);
                 display: flex;
                 flex-direction: column;
                 justify-content: space-evenly;
             }
             div.media-wrapper{
-                flex: 1 0 0;
                 display: flex;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: center;
+                min-width: 110px;
+                padding-right: 10px;
+                .media-button {
+                    padding: 0;
+                }
+                ion-icon{
+                    font-size: 2em;
+                }
             }
         }
     }

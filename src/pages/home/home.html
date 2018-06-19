@@ -1,12 +1,18 @@
 <ion-header>
     <ion-navbar>
         <ion-title>
-            TOUHOU MUSIC
+            東方音楽
         </ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+    <div class="play-all">
+        <button class="play-all-button" (click)="playAll()">
+            全て再生する
+            <ion-icon md="ios-musical-notes"></ion-icon>
+        </button>
+    </div>
     <div *ngFor="let track of tracks">
         <track-card [track]="track" (play)="playMedia(track)" (pause)="pauseMedia()"></track-card>
     </div>

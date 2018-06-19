@@ -20,9 +20,13 @@ export class HomePage {
 
     }
 
+    playAll(){
+        this.musicPlayer.startPlaylist(this.tracks);
+    }
+
     playMedia(track: AlbumTrackOutDto){
         console.log('playTrack', track);
-        this.musicPlayer.play(track);
+        this.musicPlayer.startSingleTrack(track);
     }
 
     ionViewDidLoad() {

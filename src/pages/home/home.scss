@@ -1,3 +1,18 @@
 page-home {
-
+    div.play-all{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        button.play-all-button{
+            background-color: unset;
+            padding: 10px;
+            width: 50%;
+            margin-top: 15px;
+            font-weight: bold;
+            box-shadow: 0 0 5px rgba(#000, 0.3);
+            display: flex;
+            justify-content: space-evenly;
+        }
+    }
 }
