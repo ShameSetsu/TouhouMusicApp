@@ -13,13 +13,15 @@ import { MusicService } from '../services/music.service';
 import { MusicPlayer } from '../services/musicPlayer.service';
 import { MyApp } from './app.component';
 import { TrackCard } from '../components/track-card/track-card';
+import { CurrentTrackFooter } from '../components/current-track-footer/current-track-footer';
 
 @NgModule({
     declarations: [
         MyApp,
         HomePage,
         AlbumCard,
-        TrackCard
+        TrackCard,
+        CurrentTrackFooter
     ],
     imports: [
         BrowserModule,

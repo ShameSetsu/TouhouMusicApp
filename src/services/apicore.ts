@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, RequestOptions } from '@angular/http';
+import { Settings } from '../settings';
 
 @Injectable()
 export class ApiCore {
-    url: string = 'http://192.168.1.24:3000/api/';
+    url: string = Settings.ApiHost + ':' + Settings.ApiPort + '/api/';
 
     constructor(private http: Http) { }
 

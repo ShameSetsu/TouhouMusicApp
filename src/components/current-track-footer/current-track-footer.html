@@ -1,0 +1,16 @@
+<ion-footer [ngClass]="{'hidden': !track}">
+    <ion-toolbar>
+        <ion-card>
+            <ion-card-content>
+                <div class="track-info-wrapper">
+                    <p>{{ track?.artist.name }}</p>
+                    <p>{{ track?.title }}</p>
+                </div>
+                <button class="media-wrapper button-wrapper" (click)="tooglePlay()">
+                    <ion-icon *ngIf="!playing" name="play"></ion-icon>
+                    <ion-icon *ngIf="playing" name="pause"></ion-icon>
+                </button>
+            </ion-card-content>
+        </ion-card>
+    </ion-toolbar>
+</ion-footer>

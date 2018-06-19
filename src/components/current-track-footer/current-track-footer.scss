@@ -1,0 +1,22 @@
+current-track-footer {
+    ion-footer.hidden {
+        display: none;
+    }
+    ion-footer {
+        ion-card-content{
+            display: flex;
+            div.track-info-wrapper{
+                flex: 5 0 0;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+            }
+            div.media-wrapper{
+                flex: 1 0 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+}
