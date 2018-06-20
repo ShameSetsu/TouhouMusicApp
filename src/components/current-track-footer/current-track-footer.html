@@ -2,24 +2,29 @@
     <ion-toolbar>
         <ion-card>
             <ion-card-content>
-                <div class="thumbnail-wrapper">
-                    <img [src]="track?.albumThumbnail">
+                <div class="track-info">
+                    <div class="thumbnail-wrapper">
+                        <img [src]="track?.albumThumbnail">
+                    </div>
+                    <div class="track-info-wrapper">
+                        <p>{{ track?.artist.name }}</p>
+                        <p>{{ track?.title }}</p>
+                    </div>
+                    <div class="media-wrapper">
+                        <button class="media-button button-wrapper" (click)="previousTrack()">
+                            <ion-icon name="skip-backward"></ion-icon>
+                        </button>
+                        <button class="media-button button-wrapper" (click)="tooglePlay()">
+                            <ion-icon *ngIf="!playing" name="play"></ion-icon>
+                            <ion-icon *ngIf="playing" name="pause"></ion-icon>
+                        </button>
+                        <button class="media-button button-wrapper" (click)="nextTrack()">
+                            <ion-icon name="skip-forward"></ion-icon>
+                        </button>
+                    </div>
                 </div>
-                <div class="track-info-wrapper">
-                    <p>{{ track?.artist.name }}</p>
-                    <p>{{ track?.title }}</p>
-                </div>
-                <div class="media-wrapper">
-                    <button class="media-button button-wrapper" (click)="previousTrack()">
-                        <ion-icon name="skip-backward"></ion-icon>
-                    </button>
-                    <button class="media-button button-wrapper" (click)="tooglePlay()">
-                        <ion-icon *ngIf="!playing" name="play"></ion-icon>
-                        <ion-icon *ngIf="playing" name="pause"></ion-icon>
-                    </button>
-                    <button class="media-button button-wrapper" (click)="nextTrack()">
-                        <ion-icon name="skip-forward"></ion-icon>
-                    </button>
+                <div class="track-duration">
+                    <ion-range (tap)="selectTimer($event)" min="0" [max]="trackDuration" [ngModel]="currentTimer" (ngModelChange)="durationChange($event)"></ion-range>
                 </div>
             </ion-card-content>
         </ion-card>
