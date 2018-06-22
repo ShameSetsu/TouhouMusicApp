@@ -25,6 +25,9 @@
                 </div>
                 <div class="track-duration">
                     <ion-range (tap)="selectTimer($event)" min="0" [max]="trackDuration" [ngModel]="currentTimer" (ngModelChange)="durationChange($event)"></ion-range>
+                    <div class="timer-wrapper">
+                        <p class="timer">{{ currentTimer | msToTime }}/{{ trackDuration | msToTime }}</p>
+                    </div>
                 </div>
             </ion-card-content>
         </ion-card>

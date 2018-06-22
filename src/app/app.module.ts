@@ -14,6 +14,7 @@ import { MusicPlayer } from '../services/musicPlayer.service';
 import { MyApp } from './app.component';
 import { TrackCard } from '../components/track-card/track-card';
 import { CurrentTrackFooter } from '../components/current-track-footer/current-track-footer';
+import { MsToTime } from '../services/msToTime.pipe';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { CurrentTrackFooter } from '../components/current-track-footer/current-t
         HomePage,
         AlbumCard,
         TrackCard,
-        CurrentTrackFooter
+        CurrentTrackFooter,
+        MsToTime
     ],
     imports: [
         BrowserModule,
