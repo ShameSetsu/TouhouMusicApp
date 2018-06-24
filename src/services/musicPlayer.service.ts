@@ -22,6 +22,7 @@ export class MusicPlayer {
     position: number;
     positionSubscription: Subscription;
     searchParams: any = null;
+    trackIndex: number;
 
     constructor(private media: Media, private musicService: MusicService) { }
 
@@ -50,11 +51,10 @@ export class MusicPlayer {
                     this.position = 0;
                     this.trackTimer.next(this.position);
                     this.positionSubscription.unsubscribe();
-                    if (this.playlist && this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1 < this.playlist.length) {
-                        console.log(this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1);
-                        this.playTrack(this.playlist[this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1]);
-                        console.log(this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1, '/n');
-                        if (this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1 == this.playlist.length) {
+                    if (this.playlist && this.trackIndex + 1 < this.playlist.length) {
+                        this.trackIndex++;
+                        this.playTrack(this.playlist[this.trackIndex]);
+                        if (this.trackIndex == this.playlist.length) {
                             this.searchNextPlalistPage();
                         }
                     } else {
@@ -74,22 +74,24 @@ export class MusicPlayer {
                 this.playingTrack.seekTo(value);
                 resolve();
             }, 35);
-        })
+        });
     }
 
     previous() {
         console.log('previous');
-        if (this.playlist && this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) > 0) {
-            this.playTrack(this.playlist[this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) - 1]);
+        if (this.playlist && this.trackIndex > 0) {
+            this.trackIndex --;
+            this.playTrack(this.playlist[this.trackIndex]);
         }
     }
 
     next(): Promise<void> {
         return new Promise<void>((resolve) => {
             console.log('next');
-            if (this.playlist && this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1 < this.playlist.length) {
-                this.playTrack(this.playlist[this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1]);
-                if (this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1 == this.playlist.length) {
+            if (this.playlist && this.trackIndex + 1 < this.playlist.length) {
+                this.trackIndex++;
+                this.playTrack(this.playlist[this.trackIndex]);
+                if (this.trackIndex + 1 == this.playlist.length) {
                     this.searchNextPlalistPage().then(() => resolve());
                 } else {
                     resolve();
@@ -103,13 +105,15 @@ export class MusicPlayer {
     startRandom() {
         this.musicService.getRandomTracks()
             .subscribe(tracks => {
+                this.searchParams = 'random';
                 this.releaseCurrentTrack();
                 this.playlist = tracks;
                 this.currentTrack = tracks[0];
                 this.playingTrack = this.media.create(Settings.ApiHost + ':' + Settings.ApiPort + '/files/music/' + tracks[0].file + '.' + tracks[0].format);
                 this.setMusicWatcher();
                 this.easeIn();
-                this.trackPlaying.next({ playing: true, track: tracks[0] });
+                this.trackIndex = 0;
+                this.trackPlaying.next({ playing: true, track: tracks[this.trackIndex] });
             });
     }
 
@@ -139,8 +143,9 @@ export class MusicPlayer {
         }
         this.playlist = _.cloneDeep(tracks); // cloneDeep PREVENTS TRACK FROM BEEING ADDED IN THE VIEW
         this.releaseCurrentTrack();
-        this.playTrack(tracks[(settings && settings.position) ? settings.position : 0]);
-        if (this.playlist.findIndex(track => this.findTrack(track, this.currentTrack)) + 1 == this.playlist.length) {
+        this.trackIndex = (settings && settings.position) ? settings.position : 0
+        this.playTrack(tracks[this.trackIndex]);
+        if (this.trackIndex + 1 == this.playlist.length) {
             this.searchNextPlalistPage();
         }
     }
@@ -173,6 +178,7 @@ export class MusicPlayer {
                 if (this.searchParams == 'random') {
                     this.musicService.getRandomTracks().subscribe(res => {
                         res.forEach(track => this.playlist.push(track));
+                        console.log('this.playlist', this.playlist)
                         resolve();
                     });
                 } else {
