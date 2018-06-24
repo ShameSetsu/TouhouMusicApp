@@ -18,7 +18,7 @@
                             <ion-icon *ngIf="!playing" name="play"></ion-icon>
                             <ion-icon *ngIf="playing" name="pause"></ion-icon>
                         </button>
-                        <button class="media-button button-wrapper" (click)="nextTrack()">
+                        <button [disabled]="disabledButton" class="media-button button-wrapper" (click)="nextTrack()">
                             <ion-icon name="skip-forward"></ion-icon>
                         </button>
                     </div>

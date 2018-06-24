@@ -15,7 +15,8 @@ export class CurrentTrackFooter {
     trackDuration: number = 0;
     currentTimer = 0;
     timerSubscription: Subscription;
-    tmpTimer;
+    tmpTimer: number;
+    disabledButton: boolean = false;
 
     constructor(private musicPlayer: MusicPlayer) {
         this.musicPlayer.trackPlaying.subscribe((event: { playing: true, track: AlbumTrackOutDto }) => {
@@ -24,7 +25,6 @@ export class CurrentTrackFooter {
                 this.track = event.track;
                 this.playing = event.playing;
                 this.trackDuration = event.track.duration * 1000;
-                console.log('this.trackDuration', this.trackDuration);
             } else {
                 this.open.emit(false);
                 this.track = null;
@@ -32,7 +32,6 @@ export class CurrentTrackFooter {
             }
         });
         this.timerSubscription = this.musicPlayer.trackTimer.subscribe(timer=>{
-            console.log('firstSub', timer);
             this.currentTimer = timer;
         });
     }
@@ -46,7 +45,9 @@ export class CurrentTrackFooter {
     }
 
     nextTrack() {
-        this.musicPlayer.next();
+        this.disabledButton = true;
+        this.musicPlayer.next()
+            .then(()=>this.disabledButton = false);
     }
 
     durationChange(value){
@@ -55,13 +56,10 @@ export class CurrentTrackFooter {
 
     selectTimer(event: Event){
         event.preventDefault();
-        console.log('selectTimer', event);
         this.timerSubscription.unsubscribe();
         setTimeout(() => {
-            console.log('position', this.tmpTimer);
             this.musicPlayer.setPosition(this.tmpTimer).then(()=>{
                 this.timerSubscription = this.musicPlayer.trackTimer.skip(1).subscribe(timer=>{
-                    console.log('secondSub', timer);
                     this.currentTimer = timer;
                 });
             });
