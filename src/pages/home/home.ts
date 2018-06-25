@@ -6,6 +6,7 @@ import { AlbumTrackOutDto } from '../../models/trackOutDto';
 import { MusicService } from '../../services/music.service';
 import { MusicPlayer } from '../../services/musicPlayer.service';
 import { Subject } from 'rxjs/Subject';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'page-home',
@@ -17,43 +18,41 @@ export class HomePage {
     albums: Array<AlbumOutDto>;
     tracks: Array<AlbumTrackOutDto>;
     searchSubject: Subject<string>;
+    searchInput: FormControl;
 
     constructor(private musicService: MusicService, private musicPlayer: MusicPlayer, private platform: Platform) { }
 
-    ngOnInit(){
-        this.searchSubject = new Subject<string>();
-        this.searchSubject
-        .debounceTime(500)
-        .distinctUntilChanged()
-        .subscribe(search=>{
-            this.musicService.getTracks({page: 0, title: search}).subscribe((res: any) => {
-                this.tracks = res;
-                console.log('this.tracks', this.tracks);
+    ngOnInit() {
+        this.searchInput = new FormControl(null);
+        this.searchInput.valueChanges
+            .filter(value=>value != '')
+            .debounceTime(500)
+            .distinctUntilChanged()
+            .subscribe(search => {
+                this.musicService.getTracks({ page: 0, title: search }).subscribe((res: any) => {
+                    this.tracks = res;
+                    console.log('this.tracks', this.tracks);
+                });
             });
-        })
     }
 
-    playAll(){
+    playAll() {
         this.musicPlayer.startPlaylist(this.tracks);
     }
 
-    seachTracks(search: string){
-        this.searchSubject.next(search);
-    }
-
-    playAtRandom(){
+    playAtRandom() {
         this.musicPlayer.startRandom();
     }
 
-    playMedia(track: AlbumTrackOutDto){
+    playMedia(track: AlbumTrackOutDto) {
         console.log('playTrack', track);
-        this.musicPlayer.startPlaylist(this.tracks, {position: this.tracks.findIndex(value => this.findTrack(value, track))});
+        this.musicPlayer.startPlaylist(this.tracks, { position: this.tracks.findIndex(value => this.findTrack(value, track)) });
     }
 
     ionViewDidLoad() {
         this.platform.ready().then(() => {
             console.log('ready');
-            this.musicService.getTracks({page: 0}).subscribe((res: any) => {
+            this.musicService.getTracks({ page: 0 }).subscribe((res: any) => {
                 this.tracks = res;
                 console.log('this.tracks', this.tracks);
             });

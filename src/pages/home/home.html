@@ -8,7 +8,7 @@
 
 <ion-content padding>
     <div class="track-option">
-        <ion-searchbar (ionInput)="seachTracks($event)"></ion-searchbar>
+        <ion-searchbar [formControl]="searchInput"></ion-searchbar>
         <div class="button-wrapper">
             <button class="play-all-button" (click)="playAll()">
                 全て再生する
