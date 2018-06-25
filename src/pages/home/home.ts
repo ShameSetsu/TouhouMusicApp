@@ -25,10 +25,10 @@ export class HomePage {
     ngOnInit() {
         this.searchInput = new FormControl(null);
         this.searchInput.valueChanges
-            .filter(value=>value != '')
             .debounceTime(500)
             .distinctUntilChanged()
             .subscribe(search => {
+                console.log('search', search);
                 this.musicService.getTracks({ page: 0, title: search }).subscribe((res: any) => {
                     this.tracks = res;
                     console.log('this.tracks', this.tracks);

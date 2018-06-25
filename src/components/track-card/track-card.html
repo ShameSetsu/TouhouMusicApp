@@ -1,7 +1,8 @@
 <ion-card>
     <ion-card-content>
-        <div class="thumbnail">
-            <img [src]="sanitize(track.albumThumbnail)">
+        <div class="thumbnail-wrapper">
+            <ion-img class="thumbnail" [src]="track.albumThumbnail"></ion-img>
+            <!-- <img [src]="sanitize(track.albumThumbnail)"> -->
         </div>
         <div class="info">
             <div class="info-wrapper">

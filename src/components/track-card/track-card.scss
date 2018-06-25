@@ -1,16 +1,18 @@
 track-card {
-    ion-card {
+    ion-card.card-md {
         display: flex;
+        margin: 0;
+        width: 100%;
         ion-card-content.card-content-md {
             flex: 5 0 0;
             height: 80px;
             display: flex;
             padding: 5px;
-            .thumbnail {
+            .thumbnail-wrapper {
                 height: 100%;
-                img {
-                    height: 100%;
-                    width: auto;
+                .thumbnail {
+                    height: 70px;
+                    width: 70px;
                 }
             }
             div.info {

@@ -20,7 +20,9 @@
             </button>
         </div>
     </div>
-    <div *ngFor="let track of tracks">
-        <track-card [track]="track" (play)="playMedia(track)" (pause)="pauseMedia()"></track-card>
-    </div>
+    <ion-list class="track-list" [virtualScroll]="tracks" approxItemHeight="80px" approxItemWidth="100%">
+        <div class="track-card-wrapper" *virtualItem="let track">
+            <track-card [track]="track" (play)="playMedia(track)" (pause)="pauseMedia()"></track-card>
+        </div>
+    </ion-list>
 </ion-content>

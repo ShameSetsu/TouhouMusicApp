@@ -15,9 +15,10 @@ export class TrackCard {
     playerSubscription: Subscription;
     playing: boolean = false;
 
-    constructor(private sanitizer: DomSanitizer, private musicPlayer: MusicPlayer){}
+    constructor(private sanitizer: DomSanitizer, private musicPlayer: MusicPlayer){ }
 
     ngOnInit(){
+        console.log('track', this.track);
         this.playerSubscription = this.musicPlayer.trackPlaying.subscribe((event: {playing: true, track: AlbumTrackOutDto})=>{
             this.playing = (event && event.playing && event.track._id == this.track._id);
         });
