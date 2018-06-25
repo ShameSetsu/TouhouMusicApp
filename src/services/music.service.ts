@@ -27,9 +27,9 @@ export class MusicService {
         if(payload.title) endpoint += '&title=' + payload.title;
 
         return this.api.get(endpoint).do(res => {
-            console.log('getAllTracks', res);
+            console.log('getTracks', res);
         }, err => {
-            console.error('getAllTracks', err);
+            console.error('getTracks', err);
         }).map((res: any) => JSON.parse(res._body));
     }
 

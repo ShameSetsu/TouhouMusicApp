@@ -32,7 +32,7 @@ export class CurrentTrackFooter {
             }
         });
         this.timerSubscription = this.musicPlayer.trackTimer.subscribe(timer=>{
-            this.currentTimer = timer;
+            this.currentTimer = timer >= 0 ? timer : 0;
         });
     }
 

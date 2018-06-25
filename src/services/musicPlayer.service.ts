@@ -12,17 +12,17 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class MusicPlayer {
-    playlist: Array<AlbumTrackOutDto>;
-    currentTrack: AlbumTrackOutDto;
-    playingTrack: MediaObject;
+    private playlist: Array<AlbumTrackOutDto>;
+    private currentTrack: AlbumTrackOutDto;
+    private playingTrack: MediaObject;
+    private musicStatus: Subscription;
+    private volume: number = 0.5;
+    private position: number;
+    private positionSubscription: Subscription;
+    private searchParams: any = null;
+    private trackIndex: number;
     public trackTimer: BehaviorSubject<number> = new BehaviorSubject<number>(0);
     public trackPlaying: Subject<{ playing: boolean, track: AlbumTrackOutDto }> = new Subject<{ playing: boolean, track: AlbumTrackOutDto }>();
-    musicStatus: Subscription;
-    volume: number = 0.5;
-    position: number;
-    positionSubscription: Subscription;
-    searchParams: any = null;
-    trackIndex: number;
 
     constructor(private media: Media, private musicService: MusicService) { }
 
@@ -111,7 +111,8 @@ export class MusicPlayer {
                 this.currentTrack = tracks[0];
                 this.playingTrack = this.media.create(Settings.ApiHost + ':' + Settings.ApiPort + '/files/music/' + tracks[0].file + '.' + tracks[0].format);
                 this.setMusicWatcher();
-                this.easeIn();
+                this.playingTrack.play();
+                // this.easeIn();
                 this.trackIndex = 0;
                 this.trackPlaying.next({ playing: true, track: tracks[this.trackIndex] });
             });
@@ -127,7 +128,8 @@ export class MusicPlayer {
             this.playingTrack.onStatusUpdate.filter(status => status == MEDIA_STATUS.STOPPED).subscribe(() => this.trackPlaying.next({ playing: false, track: null }));
             this.setMusicWatcher();
         }
-        this.easeIn();
+        this.playingTrack.play();
+        // this.easeIn();
         this.trackPlaying.next({ playing: true, track: track });
     }
 
@@ -157,20 +159,28 @@ export class MusicPlayer {
         console.log('create media', Settings.ApiHost + ':' + Settings.ApiPort + '/files/music/' + track.file + '.' + track.format);
         this.playingTrack = this.media.create(Settings.ApiHost + ':' + Settings.ApiPort + '/files/music/' + track.file + '.' + track.format);
         this.setMusicWatcher();
-        this.easeIn();
+        this.playingTrack.play();
+        // this.easeIn();
         this.trackPlaying.next({ playing: true, track: track });
     }
 
     pause() {
-        this.easeOut();
+        // this.easeOut();
+        this.playingTrack.pause();
         this.trackPlaying.next({ playing: false, track: this.currentTrack });
     }
 
-    findTrack(track: AlbumTrackOutDto, currentTrack: AlbumTrackOutDto): boolean {
+    play() {
+        this.trackPlaying.next({ playing: true, track: this.currentTrack });
+        this.playingTrack.play();
+        // this.easeIn();
+    }
+
+    private findTrack(track: AlbumTrackOutDto, currentTrack: AlbumTrackOutDto): boolean {
         return (track._id == currentTrack._id);
     }
 
-    searchNextPlalistPage() {
+    private searchNextPlalistPage() {
         return new Promise<void>((resolve) => {
             console.log('searchNextPlalistPage', this.searchParams);
             if (this.searchParams == null) resolve();
@@ -192,7 +202,7 @@ export class MusicPlayer {
         })
     }
 
-    releaseCurrentTrack() {
+    private releaseCurrentTrack() {
         if (this.playingTrack) {
             console.log('this.musicStatus', this.musicStatus)
             if (this.musicStatus) this.musicStatus.unsubscribe();
@@ -203,14 +213,14 @@ export class MusicPlayer {
         }
     }
 
-    easeIn() {
+    private easeIn() {
         let tmpVolume = 0;
         this.playingTrack.setVolume(tmpVolume);
         this.playingTrack.play();
         this.raiseVolume(0, this.volume);
     }
 
-    raiseVolume(volume, targetVolume) {
+    private raiseVolume(volume, targetVolume) {
         volume += 0.02;
         if (volume < targetVolume) {
             setTimeout(() => {
@@ -220,11 +230,11 @@ export class MusicPlayer {
         }
     }
 
-    easeOut() {
+    private easeOut() {
         this.reduceVolume(this.volume);
     }
 
-    reduceVolume(volume) {
+    private reduceVolume(volume) {
         volume -= 0.05;
         if (volume > 0) {
             setTimeout(() => {

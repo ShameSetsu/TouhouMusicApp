@@ -15,6 +15,9 @@ import { MyApp } from './app.component';
 import { TrackCard } from '../components/track-card/track-card';
 import { CurrentTrackFooter } from '../components/current-track-footer/current-track-footer';
 import { MsToTime } from '../services/msToTime.pipe';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { MusicControlsService } from '../services/musicControls.service';
+import { MusicControls } from '@ionic-native/music-controls';
 
 @NgModule({
     declarations: [
@@ -40,8 +43,12 @@ import { MsToTime } from '../services/msToTime.pipe';
         SplashScreen,
         ApiCore,
         MusicService,
+        MusicControlsService,
         Media,
+        ScreenOrientation,
+        MusicControls,
         MusicPlayer,
+        ScreenOrientation,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })

@@ -20,9 +20,12 @@
             </button>
         </div>
     </div>
-    <ion-list class="track-list" [virtualScroll]="tracks" approxItemHeight="80px" approxItemWidth="100%">
+    <ion-list class="track-list" [virtualScroll]="tracks" approxItemHeight="90px" approxItemWidth="100%">
         <div class="track-card-wrapper" *virtualItem="let track">
             <track-card [track]="track" (play)="playMedia(track)" (pause)="pauseMedia()"></track-card>
         </div>
     </ion-list>
+    <ion-infinite-scroll (ionInfinite)="$event.waitFor(getNextPage())" [enabled]="loadingEnabled">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
 </ion-content>
