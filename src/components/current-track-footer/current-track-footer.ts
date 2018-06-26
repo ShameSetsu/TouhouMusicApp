@@ -1,7 +1,8 @@
-import { Component, Output, EventEmitter } from "@angular/core";
+import { Component, Output, EventEmitter, NgZone } from "@angular/core";
 import { MusicPlayer } from "../../services/musicPlayer.service";
 import { AlbumTrackOutDto } from "../../models/trackOutDto";
 import { Subscription } from "rxjs/Subscription";
+import { Platform } from "ionic-angular";
 
 @Component({
     selector: 'current-track-footer',
@@ -18,7 +19,7 @@ export class CurrentTrackFooter {
     tmpTimer: number;
     disabledButton: boolean = false;
 
-    constructor(private musicPlayer: MusicPlayer) {
+    constructor(private musicPlayer: MusicPlayer, platform: Platform, zone: NgZone) {
         this.musicPlayer.trackPlaying.subscribe((event: { playing: true, track: AlbumTrackOutDto }) => {
             if (event.track) {
                 this.open.emit(true);
@@ -32,7 +33,7 @@ export class CurrentTrackFooter {
             }
         });
         this.timerSubscription = this.musicPlayer.trackTimer.subscribe(timer=>{
-            this.currentTimer = timer >= 0 ? timer : 0;
+            zone.run(()=>this.currentTimer = timer >= 0 ? timer : 0); // IS THIS TO HEAVY ?
         });
     }
 

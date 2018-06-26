@@ -35,9 +35,11 @@ export class MusicPlayer {
                 case MEDIA_STATUS.RUNNING:
                     if (this.positionSubscription) this.positionSubscription.unsubscribe();
                     this.positionSubscription = this.trackTimer.defaultIfEmpty().subscribe(newPosition => {
+                        console.log('POSITION SUBSCRIBE');
                         this.playingTrack.getCurrentPosition().then(position => {
                             setTimeout(() => {
                                 this.position = position * 1000;
+                                console.log('POSITION next');
                                 this.trackTimer.next(this.position);
                             }, 30);
                         });
