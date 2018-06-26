@@ -172,6 +172,7 @@ export class MusicPlayer {
 
     play() {
         this.trackPlaying.next({ playing: true, track: this.currentTrack });
+        console.log('PLAY');
         this.playingTrack.play();
         // this.easeIn();
     }

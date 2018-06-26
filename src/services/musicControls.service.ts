@@ -60,7 +60,7 @@ export class MusicControlsService {
         this.musicControls.create({
             track: track.title,
             artist: track.artist.name,
-            cover: 'http://i0.kym-cdn.com/photos/images/newsfeed/000/823/942/b1d.png', // IMAGE NOT FOUND == NO MUSIC CONTROLS SHOWN !!
+            cover: track.albumThumbnail, // IMAGE NOT FOUND == NO MUSIC CONTROLS SHOWN !!
             isPlaying: true,
             dismissable: false,
             hasPrev: true,
