@@ -3,15 +3,17 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { MusicPlayer } from './musicPlayer.service';
 import { AlbumTrackOutDto } from '../models/trackOutDto';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 export class MusicControlsService {
 
     currentTrack: AlbumTrackOutDto;
+    playerSubscription: Subscription;
 
     constructor(private musicControls: MusicControls, platform: Platform, private player: MusicPlayer) {
         platform.ready().then(() => {
-            player.trackPlaying.subscribe(state => {
+            this.playerSubscription = player.trackPlaying.subscribe(state => {
                 console.log('[MUSIC_CONTROL] trackPlaying', state);
                 if (state) {
                     if (this.currentTrack && state.track._id == this.currentTrack._id) {
@@ -36,33 +38,18 @@ export class MusicControlsService {
         });
     }
 
+    ngOnDestroy(){
+        this.playerSubscription.unsubscribe();
+        this.musicControls.destroy();
+    }
+
     createControl(track: AlbumTrackOutDto) {
-        console.log('control', {
-            track: track.title,
-            artist: track.artist.name,
-            cover: track.albumThumbnail,
-            isPlaying: true,
-            dismissable: false,
-            hasPrev: true,
-            hasNext: true,
-            hasClose: false,
-            album: track.album,
-            duration: track.duration,
-            elapsed: 0,
-            ticker: track.title,
-            playIcon: 'media_play',
-            pauseIcon: 'media_pause',
-            prevIcon: 'media_prev',
-            nextIcon: 'media_next',
-            closeIcon: 'media_close',
-            notificationIcon: 'notification'
-        });
         this.musicControls.create({
             track: track.title,
             artist: track.artist.name,
             cover: track.albumThumbnail, // IMAGE NOT FOUND == NO MUSIC CONTROLS SHOWN !!
             isPlaying: true,
-            dismissable: false,
+            dismissable: true,
             hasPrev: true,
             hasNext: true,
             hasClose: false,
